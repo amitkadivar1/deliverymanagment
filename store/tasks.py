@@ -40,7 +40,6 @@ def deliver_task_accept_notification(task_id, reply_channel):
 				})
 			})
 
-
 @app.task
 def store_manager_created_new_task(task_id, reply_channel):
 	task = Task.objects.get(pk=task_id)
@@ -57,7 +56,6 @@ def store_manager_created_new_task(task_id, reply_channel):
 				})
 			})
 
-
 @app.task
 def deliver_task_reject_notification(task_id, reply_channel):
 	task = Task.objects.get(pk=task_id)
@@ -73,7 +71,6 @@ def deliver_task_reject_notification(task_id, reply_channel):
 					"task_store": task.store,
 				})
 			})
-
 
 @app.task
 def deliver_task_completed_notification(task_id, reply_channel):

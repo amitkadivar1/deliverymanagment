@@ -9,12 +9,10 @@ class StoreSerializer(serializers.ModelSerializer):
 		model = Store
 		fields = ("id", "store_name", "contact_number")
 
-
 class TaskStoreSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Store
 		fields = ("id", "store_name", "contact_number")
-
 
 class TaskDeliverBoySerializer(serializers.ModelSerializer):
 	name = serializers.ReadOnlyField(source="user.get_full_name")
