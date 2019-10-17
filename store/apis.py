@@ -25,7 +25,6 @@ from store.serializers import (StoreSerializer,
 def store_task_notification(request, last_request_time):
 	notification = Task.objects.get(created_at__gt=last_request_time, status=Task.READY)
 	return JsonResponse({"notification": notification})
-
 def store_manager_cancel_task(request):
 	"""
 		end point for store manager can cancel task which is no longer accepted
@@ -61,8 +60,6 @@ def get_store_manager_all_tasks(request):
 		).data
 	return JsonResponse({"tasks" : tasks})
 
-
-
 def delivery_boy_accept_task(request):
 	"""
 		end point for deliver boy can accpet task
@@ -70,7 +67,6 @@ def delivery_boy_accept_task(request):
 	task_id = request.GET.get('task_id', None)
 	if Task.objects.filter(delivery_boy=request.user.delivery_boy, status=Task.ACCEPTED).count() >= 3:
 		return JsonResponse({"status": "failed", "error": "reaced maximum limit"})
-
 	with transaction.atomic():
 		# using atomic transactions to avoid race conditions
 		# may two users can access same resource at a time to avoid that 
@@ -88,8 +84,6 @@ def delivery_boy_accept_task(request):
 
 		except Task.DoesNotExist:
 				return JsonResponse({"status": "failed", "error":"task accepted by another delivery boy"})
-
-
 def delivery_boy_reject_task(request):
 	"""
 		endpoint for deliver boy for rejecting task
@@ -120,7 +114,6 @@ def delivery_boy_complete_task(request):
 	# deliver_task_completed_notification.delay(task_id)
 	return JsonResponse({"status": "success"}, status=status.HTTP_200_OK)
 
-
 def get_deliver_boy_completed_tasks(request):
 	access_token = AccessToken.objects.get(
 		token = request.GET.get("access_token"),
@@ -146,8 +139,6 @@ def delivery_boy_get_latest_task(request):
 	d_boy = access_token.user.delivery_boy
 	tasks = TaskSerializer(Task.objects.get.filter(delivery_boy=d_boy).order_by("-created_at").last()).data
 	return JsonResponse({"task": task})
-
-
 
 #######################
 #	token end points  #
@@ -176,7 +167,6 @@ def delivery_boy_accept_task_token(request):
 			except Task.DoesNotExist:
 				return JsonResponse({"status": "failed", "error":"task accepted by another delivery boy"})
 
-
 def delivery_boy_complete_task_token(request):
 	access_token = AccessToken.objects.get(token=request.POST.get("access_token"), expires__gt=timezone.now())
 	d_boy = access_token.user.delivery_boy
@@ -185,7 +175,6 @@ def delivery_boy_complete_task_token(request):
 	# implement push notification here store manager
 	task.save()
 	return JsonResponse({"status": "success"})
-
 
 def delivery_boy_reject_task_token(request):
 	access_token = AccessToken.objects.get(token=request.POST.get("access_token"), expires__gt=timezone.now())
