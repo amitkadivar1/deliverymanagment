@@ -89,7 +89,6 @@ class DeliveryBoy(models.Model):
 		qs = DeliveryBoy.objects.filter(number=self.number).exists()
 		if qs:
 			raise ValidationError(validation_messages.get("DUPLICATE_NUMBER"))
-	
 	class Meta:
 		verbose_name = _("Delivery Boy")
 		verbose_name_plural = _("Delivery Boys")
