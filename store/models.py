@@ -26,7 +26,6 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 	if created:
 		Token.objects.create(user=instance)
 
-
 class Store(models.Model):
 	"""
 		store manager model
@@ -38,12 +37,10 @@ class Store(models.Model):
 	contact_number = models.CharField(max_length=12)
 
 	def __str__(self):
-		return self.store_name
-
+		return "{} - {} ".format(self.store_name,self.contact_number)
+	
 	def __repr__(self):
 		return self.store_name
-
-	
 
 	def validate_unique(self, *args, **kwargs):
 		"""
